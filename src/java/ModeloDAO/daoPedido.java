@@ -29,20 +29,23 @@ public class daoPedido implements pedCRUD{
     @Override
     public List listarPedido() {
          ArrayList<beanPedido> lstPedido = new ArrayList<>();
-        String sql = "SELECT id_Pedidos, fecha_inicio, fecha_entrega, precio, pedido.id_Estado_pedido, pedido.id_Producto, pedido.id_Repartidor, pedido.id_Cliente, "
+        String sql = "SELECT id_Pedidos, fecha_inicio, fecha_entrega, precio, pedido.id_Estado_pedido, nombre_estado, pedido.id_Producto, pedido.id_Repartidor, pedido.id_Cliente, "
                 + "cliente.nombre as nombreC, producto.nombre_producto as nombrePdto, repartidor.nombre as nombreRep from mydb.pedido INNER JOIN mydb.estado_pedido ON pedido.id_Estado_pedido = estado_pedido.id_Estado_pedido "
                 + "INNER JOIN mydb.producto ON  pedido.id_Producto = producto.id_Producto INNER JOIN mydb.repartidor ON pedido.id_Repartidor = repartidor.id_Repartidor INNER JOIN mydb.cliente ON pedido.id_Cliente = cliente.id_Cliente";
-                beanPedido bPed = new beanPedido();
-                beanEstadoPed bEP = new beanEstadoPed();
-                beanProducto bPdto = new beanProducto();
-                beanRepartidor bRep = new beanRepartidor();       
-                beanCliente bCli = new beanCliente();
+                
         try {
             con = cn.getConnection();
             ps = con.prepareStatement(sql);
             rs = ps.executeQuery();
             while (rs.next()) {
+                beanPedido bPed = new beanPedido();
+                beanEstadoPed bEP = new beanEstadoPed();
+                beanProducto bPdto = new beanProducto();
+                beanRepartidor bRep = new beanRepartidor();       
+                beanCliente bCli = new beanCliente();
+                
                 bEP.setId_Estado_pedido(rs.getInt("id_Estado_pedido"));
+                bEP.setNombre_estado(rs.getString("nombre_estado"));
                 
                 bPdto.setId_Producto(rs.getInt("id_Producto"));
                 bPdto.setNombre_producto(rs.getString("nombrePdto"));
